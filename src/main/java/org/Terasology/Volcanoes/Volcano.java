@@ -6,7 +6,7 @@ package org.Terasology.Volcanoes;
 import org.terasology.entitySystem.Component;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.rendering.nui.properties.Range;
+import org.terasology.nui.properties.Range;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.RegionSelectorNoise;
 import org.terasology.utilities.procedural.SimplexNoise;
