@@ -29,6 +29,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 })
 @Produces(VolcanoFacet.class)
 public class VolcanoProvider implements FacetProviderPlugin {
+    private static final int DENSITY_SAMPLING_FACTOR = 0.07;
     private Noise noise;
 
     @Override
@@ -45,7 +46,11 @@ public class VolcanoProvider implements FacetProviderPlugin {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
                 int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
                 int seaLevel = seaLevelFacet.getSeaLevel();
-                if (surfaceHeight > seaLevel && noise.noise(wx, wz) > 0.9999) {
+                if (surfaceHeight > seaLevel
+                        && noise.noise(wx * DENSITY_SAMPLING_FACTOR, wz * DENSITY_SAMPLING_FACTOR) > 0.999999
+                        // comment above line and uncomment below line for easy testing
+                        //&& noise.noise(wx * 0.9, wz * 0.9) > 0.999
+                ) {
                     Volcano volcano = new Volcano(wx, wz);
 
                     int lowestY = getLowestY(surfaceHeightFacet, new Vector2i(volcano.getCenter()),
