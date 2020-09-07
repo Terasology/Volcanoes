@@ -1,7 +1,7 @@
 // Copyright 2020 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
-package org.Terasology.Volcanoes;
+package org.terasology.volcanoes;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;

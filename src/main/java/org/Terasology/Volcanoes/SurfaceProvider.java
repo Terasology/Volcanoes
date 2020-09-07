@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.Terasology.Volcanoes;
+package org.terasology.volcanoes;
 
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
