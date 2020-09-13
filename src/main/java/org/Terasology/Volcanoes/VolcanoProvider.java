@@ -6,9 +6,7 @@ package org.terasology.volcanoes;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.utilities.procedural.WhiteNoise;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
@@ -29,7 +27,7 @@ import org.terasology.world.generator.plugin.RegisterPlugin;
 })
 @Produces(VolcanoFacet.class)
 public class VolcanoProvider implements FacetProviderPlugin {
-    private static final int DENSITY_SAMPLING_FACTOR = 0.07;
+    private static final float DENSITY_SAMPLING_FACTOR = 0.07f;
     private Noise noise;
 
     @Override
