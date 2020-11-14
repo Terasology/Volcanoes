@@ -7,13 +7,14 @@ A Provider and Rasterizer is present, you may take help from that Provider to wr
 
  - Check `VolcanoProvider.setSeed` and read the comments there
  - A default flat world generator is provided so use that to quickly build a world
+ - for testing refer the comment in `VolcanoProvider.process` to increase density of Volcanoes
  
- You may also use the Faceted Simplex world CoreWorlds provides to see how they fit with environment.  
+ You may also use the Faceted Simplex/Faceted Perlin world CoreWorlds provides to see how they fit with environment.  
  - Change `defaultWorldGenerator` in `module.txt` 
  ```json
     "defaultWorldGenerator": "CoreWorlds:facetedSimplex"
 ```
- - Comment this line in `o.t.core.world.generator.worldGenerator.SimplexFacetedWorldGenerator`
+ - Comment this line in `o.t.core.world.generator.worldGenerator.SimplexFacetedWorldGenerator` in case you are using Faceted Simplex
  ```java
 .addProvider(new SimplexHillsAndMountainsProvider())
 ```
