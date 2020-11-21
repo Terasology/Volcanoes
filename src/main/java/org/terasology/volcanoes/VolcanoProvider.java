@@ -15,19 +15,24 @@ import org.terasology.world.generation.FacetProviderPlugin;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.Updates;
+import org.terasology.world.generation.facets.ElevationFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.SurfacesFacet;
 import org.terasology.world.generation.facets.base.BaseFieldFacet2D;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @RegisterPlugin
 @Requires({
-        @Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = Volcano.MAXWIDTH / 2)),
+        @Facet(value = ElevationFacet.class, border = @FacetBorder(sides = Volcano.MAXWIDTH / 2)),
         @Facet(value = SeaLevelFacet.class, border = @FacetBorder(sides = Volcano.MAXWIDTH / 2))
 })
+@Updates(@Facet(SurfacesFacet.class))
 @Produces(VolcanoFacet.class)
 public class VolcanoProvider implements FacetProviderPlugin {
-    private static final float DENSITY_SAMPLING_FACTOR = 0.07f;
     private Noise noise;
 
     @Override
@@ -35,29 +40,26 @@ public class VolcanoProvider implements FacetProviderPlugin {
         Border3D border = region.getBorderForFacet(VolcanoFacet.class).extendBy(0, Volcano.MAXHEIGHT,
                 Volcano.MAXWIDTH / 2);
         VolcanoFacet volcanoFacet = new VolcanoFacet(region.getRegion(), border);
-        SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegion = surfaceHeightFacet.getWorldRegion();
+        ElevationFacet elevationFacet = region.getRegionFacet(ElevationFacet.class);
+        SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
+        Rect2i worldRegion = elevationFacet.getWorldRegion();
         SeaLevelFacet seaLevelFacet = region.getRegionFacet(SeaLevelFacet.class);
 
 
         for (int wz = worldRegion.minY(); wz <= worldRegion.maxY(); wz++) {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
-                int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
+                int surfaceHeight = TeraMath.floorToInt(elevationFacet.getWorld(wx, wz));
                 int seaLevel = seaLevelFacet.getSeaLevel();
-                if (surfaceHeight > seaLevel
-                        && noise.noise(wx * DENSITY_SAMPLING_FACTOR, wz * DENSITY_SAMPLING_FACTOR) > 0.999999
-                        // comment above line and uncomment below line for easy testing
-                        //&& noise.noise(wx * 0.9, wz * 0.9) > 0.999
-                ) {
+                if (surfaceHeight > seaLevel && noise.noise(wx, wz) > 0.99996) {
                     Volcano volcano = new Volcano(wx, wz);
 
-                    int lowestY = getLowestY(surfaceHeightFacet, new Vector2i(volcano.getCenter()),
+                    int lowestY = getLowestY(elevationFacet, new Vector2i(volcano.getCenter()),
                             (int) volcano.getInnerRadius(), (int) volcano.getOuterRadius());
 
-                    if (lowestY >= volcanoFacet.getWorldRegion().minY()
-                            && lowestY <= volcanoFacet.getWorldRegion().maxY()) {
+                    if (volcanoFacet.getWorldRegion().encompasses(wx, lowestY, wz)) {
 
                         volcanoFacet.setWorld(wx, lowestY, wz, volcano);
+                        clearSurfaces(surfacesFacet, volcano, wx, lowestY, wz);
                     }
                 }
             }
@@ -96,5 +98,26 @@ public class VolcanoProvider implements FacetProviderPlugin {
             }
         }
         return lowestY;
+    }
+
+    /**
+     * Remove the surfaces that the volcano covers, to prevent surface decorations from generating in or on it.
+     */
+    private void clearSurfaces(SurfacesFacet surfaces, Volcano volcano, int cx, int cy, int cz) {
+        for (int x = (int) (cx - volcano.getOuterRadius()); x <= cx + volcano.getOuterRadius(); x++) {
+            for (int z = (int) (cz - volcano.getOuterRadius()); z <= cz + volcano.getOuterRadius(); z++) {
+                if (surfaces.getWorldRegion().encompasses(x, surfaces.getWorldRegion().minY(), z)) {
+                    VolcanoHeightInfo heightInfo = volcano.getHeightAndIsLava(x, z);
+                    int maxY = cy + heightInfo.height;
+                    // Make a copy of the surface set to avoid a ConcurrentModificationException.
+                    Set<Integer> column = new HashSet<>(surfaces.getWorldColumn(x, z));
+                    for (int surface : column) {
+                        if (surface >= cy && surface < maxY) {
+                            surfaces.setWorld(x, surface, z, false);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

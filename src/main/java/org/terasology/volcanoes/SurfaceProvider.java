@@ -22,13 +22,13 @@ import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.RegionSelectorNoise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.random.FastRandom;
-import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
+import org.terasology.world.generation.facets.SurfacesFacet;
 
-@Produces(SurfaceHeightFacet.class)
+@Produces({SurfacesFacet.class,ElevationFacet.class})
 public class SurfaceProvider implements FacetProvider {
 
     private static final int MINHEIGHT = 70;
@@ -79,18 +79,21 @@ public class SurfaceProvider implements FacetProvider {
 
     @Override
     public void process(GeneratingRegion region) {
-        // Create our surface height facet (we will get into borders later)
-        Border3D border = region.getBorderForFacet(SurfaceHeightFacet.class);
-        SurfaceHeightFacet facet = new SurfaceHeightFacet(region.getRegion(), border);
+        ElevationFacet elevationFacet = new ElevationFacet(region.getRegion(), region.getBorderForFacet(ElevationFacet.class));
+        SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(), region.getBorderForFacet(SurfacesFacet.class));
 
         // Loop through every position in our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
+        Rect2i processRegion = elevationFacet.getWorldRegion();
         for (BaseVector2i position: processRegion.contents()) {
 //            facet.setWorld(position, noiseWrapper(position.x(), position.y()) * height);
-            facet.setWorld(position, 66);
+            elevationFacet.setWorld(position, height);
+            if (surfacesFacet.getWorldRegion().encompasses(position.x(), height, position.y())) {
+                surfacesFacet.setWorld(position.x(), height, position.y(), true);
+            }
         }
 
         // Pass our newly created and populated facet to the region
-        region.setRegionFacet(SurfaceHeightFacet.class, facet);
+        region.setRegionFacet(ElevationFacet.class, elevationFacet);
+        region.setRegionFacet(SurfacesFacet.class, surfacesFacet);
     }
 }

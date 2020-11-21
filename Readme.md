@@ -18,7 +18,7 @@ A Provider and Rasterizer is present, you may take help from that Provider to wr
  ```java
 .addProvider(new SimplexHillsAndMountainsProvider())
 ```
-The hills made by this world generator are too slopy so you _may_ get weird results. Also there will be trees cutting through volcanoes as they are rasterized before Volcanoes, this can be taken care of when Provider and Rasterizer are added manually.
+The hills made by this world generator are too slopy so you _may_ get weird results.
  
  ![Volcano](images/volcano.png)
  
