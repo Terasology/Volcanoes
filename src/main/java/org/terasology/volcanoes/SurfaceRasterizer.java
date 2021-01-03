@@ -15,8 +15,9 @@
  */
 package org.terasology.volcanoes;
 
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.math.ChunkMath;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.world.block.Block;
@@ -40,10 +41,10 @@ public class SurfaceRasterizer implements WorldRasterizer {
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
-        for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
-            if (position.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), stone);
+        for (Vector3ic position : chunkRegion.getRegion()) {
+            float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
+            if (position.y() < surfaceHeight) {
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, new Vector3i()), stone);
             }
         }
     }

@@ -16,9 +16,10 @@
 
 package org.terasology.volcanoes;
 
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
+import org.lwjgl.system.CallbackI;
 import org.terasology.math.ChunkMath;
-import org.terasology.math.geom.BaseVector3i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.world.block.Block;
@@ -51,7 +52,7 @@ public class VolcanoRasterizer implements WorldRasterizerPlugin {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         VolcanoFacet volcanoFacet = chunkRegion.getFacet(VolcanoFacet.class);
 
-        for (Map.Entry<BaseVector3i, Volcano> entry : volcanoFacet.getWorldEntries().entrySet()) {
+        for (Map.Entry<Vector3ic, Volcano> entry : volcanoFacet.getWorldEntries().entrySet()) {
 
             Vector3i basePosition = new Vector3i(entry.getKey());
             Volcano volcano = entry.getValue();
@@ -66,13 +67,13 @@ public class VolcanoRasterizer implements WorldRasterizerPlugin {
 
                     for (int j = 0; j < blockInfo.height; j++) {
                         Vector3i chunkBlockPosition2 = new Vector3i(i, j, k).add(basePosition);
-                        if (chunk.getRegion().encompasses(chunkBlockPosition2)) {
+                        if (chunk.getRegion().contains(chunkBlockPosition2)) {
                             switch (blockInfo.block) {
-                                case LAVA: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2), lava);
+                                case LAVA: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2, new Vector3i()), lava);
                                 break;
-                                case SLATE: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2), slate);
+                                case SLATE: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2, new Vector3i()), slate);
                                 break;
-                                case BASALT: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2), basalt);
+                                case BASALT: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2, new Vector3i()), basalt);
                             }
                         }
                     }

@@ -56,7 +56,7 @@ public class VolcanoProvider implements FacetProviderPlugin {
                     int lowestY = getLowestY(elevationFacet, new Vector2i(volcano.getCenter()),
                             (int) volcano.getInnerRadius(), (int) volcano.getOuterRadius());
 
-                    if (volcanoFacet.getWorldRegion().encompasses(wx, lowestY, wz)) {
+                    if (volcanoFacet.getWorldRegion().contains(wx, lowestY, wz)) {
 
                         volcanoFacet.setWorld(wx, lowestY, wz, volcano);
                         clearSurfaces(surfacesFacet, volcano, wx, lowestY, wz);
@@ -106,7 +106,7 @@ public class VolcanoProvider implements FacetProviderPlugin {
     private void clearSurfaces(SurfacesFacet surfaces, Volcano volcano, int cx, int cy, int cz) {
         for (int x = (int) (cx - volcano.getOuterRadius()); x <= cx + volcano.getOuterRadius(); x++) {
             for (int z = (int) (cz - volcano.getOuterRadius()); z <= cz + volcano.getOuterRadius(); z++) {
-                if (surfaces.getWorldRegion().encompasses(x, surfaces.getWorldRegion().minY(), z)) {
+                if (surfaces.getWorldRegion().contains(x, surfaces.getWorldRegion().minY(), z)) {
                     VolcanoHeightInfo heightInfo = volcano.getHeightAndIsLava(x, z);
                     int maxY = cy + heightInfo.height;
                     // Make a copy of the surface set to avoid a ConcurrentModificationException.

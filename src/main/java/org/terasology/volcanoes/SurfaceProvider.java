@@ -87,7 +87,7 @@ public class SurfaceProvider implements FacetProvider {
         for (BaseVector2i position: processRegion.contents()) {
 //            facet.setWorld(position, noiseWrapper(position.x(), position.y()) * height);
             elevationFacet.setWorld(position, height);
-            if (surfacesFacet.getWorldRegion().encompasses(position.x(), height, position.y())) {
+            if (surfacesFacet.getWorldRegion().contains(position.x(), height, position.y())) {
                 surfacesFacet.setWorld(position.x(), height, position.y(), true);
             }
         }
