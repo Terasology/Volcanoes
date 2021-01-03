@@ -1,6 +1,6 @@
 {
     "id" : "Volcanoes",
-    "version" : "1.0.0",
+    "version" : "1.1.0-SNAPSHOT",
     "author" : "sin3point14",
     "displayName" : "Volcanoes",
     "description" : "Provides Volcano plugins to be used in worlds",
