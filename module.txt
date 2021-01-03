@@ -6,7 +6,7 @@
     "description" : "Provides Volcano plugins to be used in worlds",
     "dependencies" : [
         {"id": "CoreAssets", "minVersion": "2.0.0"},
-        {"id": "CoreWorlds", "minVersion": "1.0.0"},
+        {"id": "CoreWorlds", "minVersion": "1.0.0", "maxVersion": "3.0.0"},
         {"id": "GenericRocks", "minVersion": "1.0.0"}
      ],
     "serverSideOnly" : true,
