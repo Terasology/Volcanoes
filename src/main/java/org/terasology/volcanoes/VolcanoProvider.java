@@ -1,13 +1,13 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
-
 package org.terasology.volcanoes;
 
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetBorder;
@@ -42,7 +42,7 @@ public class VolcanoProvider implements FacetProviderPlugin {
         VolcanoFacet volcanoFacet = new VolcanoFacet(region.getRegion(), border);
         ElevationFacet elevationFacet = region.getRegionFacet(ElevationFacet.class);
         SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
-        Rect2i worldRegion = elevationFacet.getWorldRegion();
+        BlockAreac worldRegion = elevationFacet.getWorldArea();
         SeaLevelFacet seaLevelFacet = region.getRegionFacet(SeaLevelFacet.class);
 
 
@@ -76,7 +76,7 @@ public class VolcanoProvider implements FacetProviderPlugin {
          noise = new WhiteNoise(seed);
     }
 
-    private int getLowestY(BaseFieldFacet2D facet, Vector2i center, int minRadius, int maxRadius) {
+    private int getLowestY(BaseFieldFacet2D facet, Vector2ic center, int minRadius, int maxRadius) {
 
         // checks the region between the 2 circles only
         Vector2i stepX = new Vector2i(1, 0);
@@ -87,9 +87,9 @@ public class VolcanoProvider implements FacetProviderPlugin {
         int maxRadiusSq = maxRadius * maxRadius;
         int lowestY = Integer.MAX_VALUE;
         for (Vector2i pos = new Vector2i(start); pos.x <= end.x; pos.add(stepX)) {
-            for (pos.setY(start.y); pos.y <= end.y; pos.add(stepY)) {
-                int centerDistSq = center.distanceSquared(pos);
-                if (facet.getWorldRegion().contains(pos)
+            for (pos.y = start.y; pos.y <= end.y; pos.add(stepY)) {
+                long centerDistSq = center.distanceSquared(pos);
+                if (facet.getWorldArea().contains(pos)
                 && centerDistSq <= maxRadiusSq
                 && centerDistSq >= minRadiusSq) {
                     int y = (int) facet.getWorld(pos);

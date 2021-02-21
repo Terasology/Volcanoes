@@ -4,11 +4,11 @@ package org.terasology.volcanoes;
 
 import org.joml.Vector3i;
 import org.joml.Vector3ic;
-import org.terasology.math.ChunkMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.Chunks;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizerPlugin;
@@ -54,11 +54,11 @@ public class VolcanoRasterizer implements WorldRasterizerPlugin {
                         Vector3i chunkBlockPosition2 = new Vector3i(i, j, k).add(basePosition);
                         if (chunk.getRegion().contains(chunkBlockPosition2)) {
                             switch (blockInfo.block) {
-                                case LAVA: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2, new Vector3i()), lava);
+                                case LAVA: chunk.setBlock(Chunks.toRelative(chunkBlockPosition2, new Vector3i()), lava);
                                 break;
-                                case SLATE: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2, new Vector3i()), slate);
+                                case SLATE: chunk.setBlock(Chunks.toRelative(chunkBlockPosition2, new Vector3i()), slate);
                                 break;
-                                case BASALT: chunk.setBlock(ChunkMath.calcRelativeBlockPos(chunkBlockPosition2, new Vector3i()), basalt);
+                                case BASALT: chunk.setBlock(Chunks.toRelative(chunkBlockPosition2, new Vector3i()), basalt);
                             }
                         }
                     }

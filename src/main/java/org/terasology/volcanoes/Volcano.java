@@ -1,9 +1,9 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
-
 package org.terasology.volcanoes;
 
-import org.terasology.math.geom.Vector2i;
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.RegionSelectorNoise;
 import org.terasology.utilities.procedural.SimplexNoise;
@@ -55,7 +55,7 @@ public class Volcano {
         return outerRadius;
     }
 
-    public Vector2i getCenter() {
+    public Vector2ic getCenter() {
         return center;
     }
 

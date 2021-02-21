@@ -1,27 +1,13 @@
-/*
- * Copyright 2020 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+// Copyright 2021 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.volcanoes;
 
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
+import org.joml.Vector2ic;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.RegionSelectorNoise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.random.FastRandom;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
@@ -83,8 +69,8 @@ public class SurfaceProvider implements FacetProvider {
         SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(), region.getBorderForFacet(SurfacesFacet.class));
 
         // Loop through every position in our 2d array
-        Rect2i processRegion = elevationFacet.getWorldRegion();
-        for (BaseVector2i position: processRegion.contents()) {
+        BlockAreac processRegion = elevationFacet.getWorldArea();
+        for (Vector2ic position: processRegion) {
 //            facet.setWorld(position, noiseWrapper(position.x(), position.y()) * height);
             elevationFacet.setWorld(position, height);
             if (surfacesFacet.getWorldRegion().contains(position.x(), height, position.y())) {
