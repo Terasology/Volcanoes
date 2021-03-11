@@ -3,18 +3,18 @@
 package org.terasology.volcanoes;
 
 import org.joml.Vector2ic;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.RegionSelectorNoise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.random.FastRandom;
-import org.terasology.world.block.BlockAreac;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SurfacesFacet;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.RegionSelectorNoise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
+import org.terasology.engine.utilities.random.FastRandom;
+import org.terasology.engine.world.block.BlockAreac;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SurfacesFacet;
 
-@Produces({SurfacesFacet.class,ElevationFacet.class})
+@Produces({SurfacesFacet.class, ElevationFacet.class})
 public class SurfaceProvider implements FacetProvider {
 
     private static final int MINHEIGHT = 70;
