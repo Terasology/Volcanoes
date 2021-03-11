@@ -4,10 +4,10 @@ package org.terasology.volcanoes;
 
 import org.joml.Vector2i;
 import org.joml.Vector2ic;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.RegionSelectorNoise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.random.FastRandom;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.RegionSelectorNoise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
+import org.terasology.engine.utilities.random.FastRandom;
 
 public class Volcano {
     public static final int MINHEIGHT = 120;
