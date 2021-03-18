@@ -4,7 +4,7 @@ package org.terasology.volcanoes;
 
 import org.joml.Vector2ic;
 import org.terasology.engine.utilities.procedural.Noise;
-import org.terasology.engine.utilities.procedural.RegionSelectorNoise;
+import org.terasology.utilities.procedural.RegionSelectorNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.random.FastRandom;
 import org.terasology.engine.world.block.BlockAreac;
