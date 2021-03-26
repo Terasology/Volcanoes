@@ -8,8 +8,8 @@ import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.WorldRasterizerPlugin;
 import org.terasology.engine.world.generator.plugin.RegisterPlugin;
@@ -34,7 +34,7 @@ public class VolcanoRasterizer implements WorldRasterizerPlugin {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         VolcanoFacet volcanoFacet = chunkRegion.getFacet(VolcanoFacet.class);
 
         for (Map.Entry<Vector3ic, Volcano> entry : volcanoFacet.getWorldEntries().entrySet()) {
